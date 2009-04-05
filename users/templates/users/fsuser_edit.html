@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block contents %}
+    <h1>Edit user</h2>
+    <form>
+        <p>{{ form.forms.0.as_p }}</p>
+    </form>
+    {% for form in form.var_forms.forms %}
+        <form>
+            <p>{{ form.as_p }}</p>
+        </form>
+    {% endfor %}
+
+{% endblock %}

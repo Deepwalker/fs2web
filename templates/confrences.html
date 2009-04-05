@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block contents %}
+    <h1>Conferences</h1>
+    <a href="confs/">Renew</a>
+    {% for c in confs %}
+    <h2>conference {{ c.0 }}</h2>
+    <table>
+        <tr>
+            <td>caller_id_name</td>
+            <td>caller_id_number</td>
+            <td>m.id</td>
+            <td>can_hear</td>
+            <td>can_speak</td>
+            <td>talking</td>
+            <td>uuid</td>
+        </tr>
+        {% for m in c.1 %}
+        <tr>
+            <td>{{ m.caller_id_name }}</td>
+            <td>{{ m.caller_id_number }}</td>
+            <td>{{ m.id }}</td>
+            <td>{{ m.flags.can_hear }}</td>
+            <td>{{ m.flags.can_speak }}</td>
+            <td>{{ m.flags.talking }}</td>
+            <td>{{ m.uuid }}</td>
+            <td><a href="confs/{{ c.0 }}/kick/{{ m.id }}/">kick</a></td>
+            <td><a href="confs/{{ c.0 }}/mute/{{ m.id }}/">mute</a></td>
+            <td><a href="confs/{{ c.0 }}/unmute/{{ m.id }}/">unmute</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endfor %}
+{% endblock %}

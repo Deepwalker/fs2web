@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+    {% block head %}
+    <style>
+        div.context,div.ext,div.condition,div.action { -moz-border-radius: 10; }
+        input,select { -moz-border-radius: 5; padding: 2px; margin: 3px; }
+        div.context { background: #abf; padding: 5px; }
+        div.ext { margin: 3px; margin-left: 20px; background: #fbb; padding: 5px; }
+        div.condition { margin-left: 20px; background: #fcc; }
+        div.action { margin-left: 10px; padding: 3px; background: #fdd; }
+        div.remove_parent { float: right; cursor: pointer; color: red; 
+            font-weight: bold; margin-top: 2px; margin-right: 2px; };
+    </style>
+    <script src="bin/jquery-1.3.1.min.js"></script>
+    <script src="bin/ui.core.js"></script>
+    <script src="bin/ui.sortable.js"></script>
+    <script src="bin/trimpath-template-1.0.38.js"></script>
+    <script src="bin/json2.js"></script>
+    <script>
+        {% autoescape off %}
+        dialplan_data = {'data':{{ data }} };
+        {% endautoescape %}
+        $(document).ready(function()
+        {
+            // Templates work
+            TrimPath.global_modifiers = {'include': function(data,template){
+                return TrimPath.processDOMTemplate(template,{data: data})}
+            };
+            $(template_res).html(TrimPath.processDOMTemplate("context_template",dialplan_data));
+            
+            //возможность перетаскивания объектов
+            $("div.actions").sortable();
+            $("div.conditions").sortable();
+            $("div.exts").sortable();
+
+            //Редактирование
+            enter_fne = function(e){
+                if (e.which == 13){
+                    var t = $(e.target.parentNode);
+                    var val = $(e.target).val()
+                    t.unbind("keypress")
+                        .click(click_fne)
+                        .html(val);
+                    t.attr("iH",val);
+                };
+                if (e.which == 0 ){
+                    var t = $(e.target.parentNode);
+                    t.unbind("keypress")
+                        .click(click_fne)
+                        .html(t.attr("iH"));
+                };
+                console.log(e.which);
+            };
+            click_fne = function(){
+                th=$(this)
+                iH = th.attr('iH');
+                if (!iH){
+                    th.attr('iH',th.html());
+                    iH = th.attr('iH');
+                };
+                th.html("<input id=\"current_edit_param\" value=\""+iH+"\"/>")
+                    .unbind("click")
+                    .keypress(enter_fne);
+                //TODO сделать фокус
+                $("input",th).focus();
+
+            };
+            $(".editable").click(click_fne);
+            
+            //Добавление Extension
+            $("form.add_ext").submit(function(){
+                ext_name = $("input.name",this).val();
+                continue_on = $("input.continue,this").attr("checked");
+                $(".exts",this.parentNode).append(
+                   TrimPath.processDOMTemplate("ext_template",{'data':{
+                            'name':ext_name,
+                            'continue_on':continue_on,
+                            'conditions':[],
+                            'id':null,
+                        }}));
+                return false;
+            });
+            // Add Condition
+            $("form.add_condition").submit(function(){
+                field = $("input.field",this).val();
+                exp = $("input.expression",this).val();
+                break_on = $("select",this).val();
+                new_c = TrimPath.processDOMTemplate("condition_template",{'data':{
+                            'field':field,
+                            'expression':exp,
+                            'break_on':break_on,
+                            'actions':[],
+                            'id':null,
+                        }});
+                $(".conditions",this.parentNode).append(new_c);
+                return false;
+            });
+            // Add Action
+            $("form.add_action").submit(function(){
+                app = $("input.app",this).val();
+                param = $("input.param",this).val();
+                anti = $("input.anti",this).attr("checked");
+                $(".actions",this.parentNode).append(
+                   TrimPath.processDOMTemplate("act_template",{'data':{
+                            'app_name':app,
+                            'params':param,
+                            'anti':anti,
+                            'id':null,
+                        }}));
+                return false;
+            });
+            // action|anti-action
+            $(".action_pref").click(function(){
+                act = this.innerHTML;
+                if (act=='action'){
+                    this.innerHTML="anti-action";
+                }else{
+                    this.innerHTML="action";
+                };
+            });
+            $("#contents").click(function(e){
+                t=e.target;
+                th=$(e.target);
+                console.log(th);
+                //Удаление
+                if (th.hasClass("remove_parent")){
+                    $(e.target.parentNode).slideUp("slow",function(){$(this).remove()})};
+                //Анти да/нет
+                if (th.hasClass("action_pref")){
+                    console.log(t.innerHTML);
+                    if (t.innerHTML=='action'){ t.innerHTML="anti-action";
+                    }else{ t.innerHTML="action"; }
+                };
+            });
+
+        })
+        // Grab DP tree
+        get_actions=function(cnd){
+            actions = [];
+            $(".action",cnd).each(function(i){
+                th=$(this);
+                action = {
+                    id : th.attr('name'),
+                    app_name: $("span.app_edit",th).html(),
+                    params: $("span.param_edit",th).html(),
+                    anti: Boolean($("span.action_pref",th).html().indexOf("anti")!=-1),
+                };
+                actions.push(action);
+            });
+            return actions;
+        };
+        get_conditions=function(ext){
+            conditions = [];
+            $(".condition",ext).each(function(i){
+                th=$(this);
+                condition = {
+                    id : th.attr('name'),
+                    field: $("h4 span:first",th).html(),
+                    expression:$("h4 span:last",th).html(),
+                    break_on:$("select.break_on",th).val(),
+                    actions:get_actions(this),
+                };
+                conditions.push(condition);
+            });
+            return conditions;
+        };
+        get_exts=function(ctx){
+            exts=[];
+            $(".ext",ctx).each(function(i){
+                th=$(this);
+                ext={
+                    id : th.attr('name'),
+                    name : $("h3 span:first",th).html(),
+                    continue_on : Boolean($("h3 span:last",th).html()),
+                    conditions : get_conditions(this),
+                };
+                exts.push(ext);
+            });
+            return exts;
+        };
+        grab_conf = function(){
+            conf = [];
+            $(".context").each(function(i){
+                th=$(this);
+                context = {
+                    id : th.attr('name'),
+                    name : $("h2:first",this).html(),
+                    exts : get_exts(this),
+                };
+                conf.push(context);
+            });
+            //$("#template2_res").attr("innerHTML","");
+            //$("#template2_res").html(TrimPath.processDOMTemplate("context_template",{data:conf}));
+            console.log(JSON.stringify(conf));
+            return conf;
+        };
+        $(document).ready(function(){
+            $("#SaveDP").click(function(){
+                $.post("/dialplan/save/",{data:JSON.stringify(grab_conf())},function(data,ts){alert(data)},"html");
+            });
+        });
+    </script>
+    {% endblock %}
+{% block contents %}
+    <h1>Edit dialplan <span id="SaveDP">Save</span></h1>
+    <!-- Шаблоны -->
+    <textarea id="context_template" style="display:none;">
+    {for context in data}
+    <div class="context" name="${context.id}" id="context_${context.id}"><h2>${context.name}</h2>
+        <div class="exts">
+        {for extension in context.exts}
+            ${extension|include:"ext_template"}
+        {/for}
+        </div>
+        <form class="add_ext">
+            <span class="add_label">Add extension</span>
+            <input class="name" type="input"/>
+            continue? <input class="continue" type="checkbox"/>
+        </form>
+    </div>
+    {/for}
+    </textarea>
+    <textarea id="ext_template" style="display:none;">
+        <div class="ext" name="${data.id}">
+          <div class="remove_parent">X</div>
+          <h3><span class="editable">${data.name}</span> <span>{if data.continue_on}continue{/if}</span></h3>
+          <div class="conditions">
+          {for condition in data.conditions }
+            ${condition|include:"condition_template"}
+          {/for}
+          </div>
+          <form class="add_condition">
+              <span class="add_label">Add condition</span>
+              <input class="field" type="input"/>
+              <input class="expression" type="input"/>
+              <select class="break_on" value="on-false">
+                    <option>on-false</option>
+                    <option>on-true</option>
+                    <option>always</option>
+                    <option>never</option>
+              </select>  
+              <input type="submit"/>
+          </form>
+        </div>
+    </textarea>
+    <textarea id="condition_template" style="display:none;">
+          <div class="condition" name="${data.id}"> 
+            <div class="remove_parent">X</div>
+            <h4><span class="editable">${data.field}</span> = <span class="editable">${data.expression}</span>, break 
+              <select class="break_on" value="${data.break_on}">
+                    <option {if data.break_on=="on-false"} selected {/if} >on-false</option>
+                    <option {if data.break_on=="on-true"} selected {/if} >on-true</option>
+                    <option {if data.break_on=="always"} selected {/if} >always</option>
+                    <option {if data.break_on=="never"} selected {/if} >never</option>
+              </select></h4> 
+            <div class="actions">
+            {for action in data.actions}
+                ${action|include:"act_template"}
+            {/for}
+            </div>
+            <form class="add_action">
+                <span class="add_label">Add action</span>
+                <input class="app" type="input"/>
+                <input class="param" type="input"/>
+                Anti? <input class="anti" type="checkbox"/>
+                <input type="submit"/>
+            </form>
+          </div>
+    </textarea>
+    <textarea id="act_template" style="display:none;">
+            <div class="action" name="${data.id}">
+                <div class="remove_parent">X</div>
+                <span class="action_pref">{if data.anti }anti-{/if}action</span>
+                 application="<span class="app_edit editable">${data.app_name}</span>" 
+                data="<span class="param_edit editable">${data.params}</span>"
+            </div>
+    </textarea>
+    <div id="template_res"></div>
+    <div id="template2_res"></div>
+{% endblock %}

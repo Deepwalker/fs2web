@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="freeswitch/xml">
+  <section name="directory">
+   <domain name="{{ user.domain }}">
+    <params>
+        <param name="dial-string" value="{presence_id=${dialed_user}@{{ user.domain }}}${sofia_contact(default/${dialed_user}@{{ user.domain }})}"/>
+    </params>
+     <groups>
+      <group name="mk">
+       <users> 
+       <user id="{{ user.uid }}" mailbox="{{ user.mailbox }}">
+        <params>
+          <param name="password" value="{{ user.password }}"/>
+          <param name="vm-password" value="{{ user.mailbox_pwd }}"/>
+          {% if user.fsuvariable_set %}
+            {% for i in user.fsuvariable_set.all %}
+                {% if i.is_param %}
+           <param name="{{ i.variable.name }}" value="{{ i.value }}"/>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
+        </params>
+        <variables>
+          <variable name="accountcode" value="{{ user.accountcode }}"/>
+          <variable name="user_context" value="{{ user.user_context.name }}"/>
+          <variable name="effective_caller_id_name" value="{{ user.effective_caller_id_name }}"/>
+          <variable name="effective_caller_id_number" value="{{ user.effective_caller_id_number }}"/>
+          {% if user.fsuvariable_set %}
+            {% for i in user.fsuvariable_set.all %}
+                {% if i.is_param %}
+                {% else %}
+           <variable name="{{ i.variable.name }}" value="{{ i.value }}"/>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
+        </variables>
+       </user>
+       </users>
+      </group>
+     </groups>
+    </domain>
+  </section>
+</document>

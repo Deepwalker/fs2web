@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- http://wiki.freeswitch.org/wiki/Dialplan_XML -->
+<document type="freeswitch/xml">
+  <section name="dialplan" description="FS2WEB Dial Plan For FreeSwitch">
+    <context name="{{ context }}">
+        {% for extension in context.extension_set.all %}
+        <extension name="{{ extension.name }}">
+          {% for condition in extension.condition_set.all %}
+          <condition field="{{ condition.field }}" expression="{{ condition.expression }}">
+            {% for action in condition.action_set.all %}
+            <{% if action.anti %}anti-{% endif %}action application="{{ action.app.name }}" data="{{ action.params }}"/>
+            {% endfor %}
+          </condition>
+          {% endfor %}
+        </extension>
+        {% endfor %}
+    </context>
+  </section>
+</document>

@@ -1,0 +1,31 @@
+<head>
+    <base href="http://127.0.0.1:8000/"/>
+    <style>
+        *, body, html { margin: none; padding: none; border: none; font-family:arial; }
+        h1,h2,h3 { font-style: italic; color: #434343; }
+        .logo { font-size: 1.5em; }
+        #contents h1 { font-size: 1.5em; }
+        #contents h1:first-letter { color: #06515F; font-size: 2em; }
+        a:hover { color: #06515F;}
+        a { color: #0777A0; }
+        #nav { position: absolute; top: 0px; left: 0px; 
+                background-color: #bbb; width: 100%;
+                padding-top: 3px; padding-bottom: 3px; }
+        body { margin-top: 2em; }
+        input, select { border: solid 1px #0777A0; }
+        form label { display: inline-block; width: 200px; }
+    </style>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <h1><span class="logo">fs2web</span> project</h1>
+    <div id="nav">
+        <a href="confs/">Conferences</a>
+        <a href="dialplan/edit/default/">Edit context default</a>
+    </div>
+    <div id="contents">
+        {% block contents %}
+        {% endblock %}
+    </div>
+</body>
