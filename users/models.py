@@ -45,3 +45,33 @@ class FSGroup(m.Model):
     def __unicode__(self):
         return self.name
 
+TRANSPORT = (
+    ("udp","udp"),
+    ("tcp","tcp"),
+)
+class gateway(m.Model):
+    "Gateway model"
+    name = m.CharField(max_length=255)
+    username = m.CharField(max_length=255)
+    realm = m.CharField(max_length=255)
+    from_user = m.CharField(max_length=255)
+    from_domain = m.CharField(max_length=255)
+    password = m.CharField(max_length=255)
+    extension = m.CharField(max_length=255)
+    proxy = m.CharField(max_length=255)
+    register_proxy = m.CharField(max_length=255)
+    expire_seconds = m.IntegerField()
+    register = m.BooleanField()
+    register_transport = m.CharField(max_length=4,choices=TRANSPORT)
+    retry_seconds = m.IntegerField()
+    caller_id_in_form = m.BooleanField()
+    contact_params = m.CharField(max_length=255)
+    ping = m.IntegerField()
+
+    user = m.ForeignKey(FSUser,blank=True,null=True)
+    domain = m.ForeignKey(FSDomain)
+    def __unicode__(self):
+        return self.name
+
+
+
