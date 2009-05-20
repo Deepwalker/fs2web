@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 from django.views.generic import list_detail
+from django.views.generic import simple
 
 #from users.views
 
@@ -15,6 +16,7 @@ urlpatterns = patterns('',
     (r'^confs/$','conference.views.list'),
     (r'^confs/(?P<cnf>[-.0-9a-zA-Z]+)/(?P<do>kick|mute|unmute)/(?P<id>\d+)/$','conference.views.list'),
 
+    (r'^$',simple.direct_to_template,{'template': 'index.html'}),
     # Uncomment the next line to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^bin/(?P<path>.*)$', 'django.views.static.serve',
