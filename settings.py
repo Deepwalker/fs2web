@@ -1,4 +1,6 @@
 # Django settings for fs2web project.
+from local_settings import *
+
 import os
 #BP = '/home/krivushinme/python/fs2web/'
 BP = os.path.realpath(os.path.curdir) + '/'
@@ -87,3 +89,4 @@ INSTALLED_APPS = (
     'conference',
     'dialplan',
 )
+
