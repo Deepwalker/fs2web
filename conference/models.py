@@ -13,7 +13,7 @@ class Conference(m.Model):
         participants = list(self.participants.all())
         if participants:
             for p in participants:
-                print fsapi("bgapi","conference %s@default dial "%self.number + settings.DIALTEMPLATE%p.number)
+                fsapi("bgapi","conference %s@default dial "%self.number + settings.DIALTEMPLATE%p.number)
     def __unicode__(self):
         return self.name
 
