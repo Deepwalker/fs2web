@@ -12,8 +12,8 @@ def fsapi(*args,**kwargs):
 def list(request,do=None,id=None,cnf=None):
     r = O.fromstring(fsapi("conference","xml_list"))
     if do and id:
-        print do,id,cnf
-        print 'FS:',fsapi("conference","%s %s %s"%(cnf,do,id))
+        #print do,id,cnf
+        #print 'FS:',fsapi("conference","%s %s %s"%(cnf,do,id))
         return HttpResponseRedirect('/confs/')
 
     if r.countchildren() > 0:
