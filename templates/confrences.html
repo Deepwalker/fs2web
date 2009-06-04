@@ -4,6 +4,8 @@
     <a href="/confs/">Renew</a>
     {% for c in confs %}
     <h2>conference {{ c.0 }}</h2>
+    <p><form method="POST">{{ c.2.conference }}{{ c.2.phone }}
+        <input type="submit" value="Invite phone"/></form></p>
     <table>
         <tr>
             <td>caller_id_name</td>
@@ -26,8 +28,6 @@
             <td><a href="/confs/{{ c.0 }}/kick/{{ m.id }}/">kick</a></td>
             <td><a href="/confs/{{ c.0 }}/mute/{{ m.id }}/">mute</a></td>
             <td><a href="/confs/{{ c.0 }}/unmute/{{ m.id }}/">unmute</a></td>
-            <td><form method="POST">{{ c.2.conference }}{{ c.2.phone }}
-                <input type="submit" value="Invite phone"/></form></td>
         </tr>
         {% endfor %}
     </table>
