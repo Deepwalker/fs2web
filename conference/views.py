@@ -23,6 +23,7 @@ def list(request,do="",id="",cnf="",param=""):
             conf = form.cleaned_data.get('conference')
             phone = form.cleaned_data.get('phone')
             call_from_conference(conf,phone)
+            return HttpResponseRedirect('/confs/')
 
     conferences = []
     if r.countchildren() > 0:

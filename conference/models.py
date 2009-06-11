@@ -10,7 +10,7 @@ class Conference(m.Model):
     pin = m.IntegerField("Password",max_length=254,blank=True,null=True)
     participants = m.ManyToManyField("Phone")
     def start(self):
-        participants = list(self.participants.all())
+        participants = list(self.participants.filter(auto_call=True))
         if participants:
             for p in participants:
                 call_from_conference(self.number,p.number)
@@ -20,6 +20,7 @@ class Conference(m.Model):
 class Phone(m.Model):
     name = m.CharField("Name",max_length=254)
     number = m.IntegerField("Number",max_length=254)
+    auto_call = m.BooleanField("Auto call",default=True)
     def caller_id_name(self):
         return self.name
     def caller_id_number(self):
