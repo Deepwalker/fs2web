@@ -1,23 +1,30 @@
 {% extends "base.html" %}
+{% block style %}
+    h2.planned_conf { color: #0777A0; }
+    table { border-collapse: collapse; } 
+    th { color: #06515F; }
+    td { border: 1px solid #0777A0; }
+    tr.kicked { background-color: #fbb; }
+{% endblock %}
 {% block contents %}
     <h1>Conferences</h1>
     <a href="/confs/">Renew</a>
     {% for c in confs %}
-    <h2>conference {{ c.0 }}</h2>
-    <p><form method="POST">{{ c.2.conference }}{{ c.2.phone }}
+    <h2{% if c.2 %} class="planned_conf"{% endif %}>conference {{ c.0 }}</h2>
+    <p><form method="GET">{{ c.2.conference }}{{ c.2.phone }}
         <input type="submit" value="Invite phone"/></form></p>
     <table>
         <tr>
-            <td>caller_id_name</td>
-            <td>caller_id_number</td>
-            <td>m.id</td>
-            <td>can_hear</td>
-            <td>can_speak</td>
-            <td>talking</td>
-            <td>uuid</td>
+            <th>caller_id_name</th>
+            <th>caller_id_number</th>
+            <th>m.id</th>
+            <th>can_hear</th>
+            <th>can_speak</th>
+            <th>talking</th>
+            <th>uuid</th>
         </tr>
         {% for m in c.1 %}
-        <tr>
+        <tr{% if not m.uuid %} class="kicked"{% endif %}>
             <td>{{ m.caller_id_name }}</td>
             <td>{{ m.caller_id_number }}</td>
             <td>{{ m.id }}</td>
@@ -25,9 +32,11 @@
             <td>{{ m.flags.can_speak }}</td>
             <td>{{ m.flags.talking }}</td>
             <td>{{ m.uuid }}</td>
+            <td>{{ m.member }}</td>
             <td><a href="/confs/{{ c.0 }}/kick/{{ m.id }}/">kick</a></td>
             <td><a href="/confs/{{ c.0 }}/mute/{{ m.id }}/">mute</a></td>
             <td><a href="/confs/{{ c.0 }}/unmute/{{ m.id }}/">unmute</a></td>
+            {% if not m.uuid %}<td><a href="?conference={{ c.0 }}&phone={{ m.number }}">Reinvite</a></td>{% endif %}
         </tr>
         {% endfor %}
     </table>
