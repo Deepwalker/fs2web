@@ -41,4 +41,15 @@
         {% endfor %}
     </table>
     {% endfor %}
+    {% for conf in object_list %}
+        <h2>{{ conf }}<a href="{% url conference.views.list do="start" cnf=conf.id id=0 %}">Start</a></h2>
+        <table>
+        {% for phone in conf.participants.all %}
+            <tr>
+                <td>{{ phone.name }}</td>
+                <td>{{ phone.number }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
 {% endblock %}

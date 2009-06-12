@@ -88,5 +88,6 @@ INSTALLED_APPS = (
     'users',
     'conference',
     'dialplan',
+#    'django_evolution',
 )
 

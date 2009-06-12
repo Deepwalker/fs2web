@@ -9,6 +9,7 @@ class Conference(m.Model):
     number = m.CharField("Number",max_length=254)
     pin = m.IntegerField("Password",max_length=254,blank=True,null=True)
     participants = m.ManyToManyField("Phone")
+    is_active = m.BooleanField("Is active?",default=False,editable=False)
     def start(self):
         participants = list(self.participants.filter(auto_call=True))
         if participants:

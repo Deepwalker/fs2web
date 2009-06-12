@@ -10,15 +10,12 @@ def get_user_info(request):
     else:
         data = request.POST
 
-    print data
-
     if data.get('action')=='group_call':
         return get_group(data)
     else:
         return get_user(data)
 
 def get_user(data):
-    print data['domain'][0]
     user = get_object_or_404(FSUser,uid=data.get('user'),domain__name=data['domain'])
     return render_to_response('user.xml',{'user':user,'data':data})
 

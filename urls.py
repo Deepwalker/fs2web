@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     (r'^dialplan/', include('dialplan.urls')),
 
     (r'^confs/$','conference.views.list'),
-    (r'^confs/(?P<cnf>[-.0-9a-zA-Z]+)/(?P<do>kick|mute|unmute)/(?P<id>\d+)/$','conference.views.list'),
+    (r'^confs/(?P<cnf>[-.0-9a-zA-Z]+)/(?P<do>kick|mute|unmute|start)/(?P<id>\d+)/$','conference.views.list'),
 
     (r'^$',simple.direct_to_template,{'template': 'index.html'}),
     # Uncomment the next line to enable admin documentation:
