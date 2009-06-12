@@ -55,7 +55,6 @@ def list(request,do="",id="",cnf="",param=""):
             conf_res = [conf_name, fs_members,InviteParticipantFrom({'conference':conf.get('name')}),
                 conference[0] if conference else None] 
             conferences.append(conf_res)
-        print Conference.objects.exclude(id__in=active_confs)
     Conference.objects.exclude(id__in=active_confs).update(is_active=False)
     return list_detail.object_list(request,queryset=Conference.objects.filter(is_active=False),
         template_name='confrences.html',extra_context={'confs':conferences})
