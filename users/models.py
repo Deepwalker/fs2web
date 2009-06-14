@@ -23,7 +23,7 @@ class FSUser(m.Model):
     domain = m.ForeignKey(FSDomain,verbose_name=_(u"Domain"))
     group = m.ForeignKey("FSGroup",verbose_name=_(u"Group"))
     def __unicode__(self):
-        return self.uid + '/' + self.user_context.name
+        return "%s (%s)"%(self.uid,self.user_context.name)
     class Meta:
         verbose_name = _(u"User")
         verbose_name_plural = _(u"Users")

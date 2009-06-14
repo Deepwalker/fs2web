@@ -33,7 +33,7 @@ class Phone(m.Model):
     def member(self):
         return self
     def __unicode__(self):
-        return "%s %s"%(self.name,self.number)
+        return "%s (%s)"%(self.name,self.number)
     class Meta:
         verbose_name = _(u"Phone")
         verbose_name_plural = _(u"Phones")

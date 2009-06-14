@@ -8,12 +8,16 @@
         td { border: 1px solid #0777A0; }
         tr.kicked { background-color: #fbb; }
         div.conference_block { -moz-border-radius: 5; padding: 2px; margin: 3px; border: 1px solid #0777A0; }
-        div.unactive_conferences { -moz-border-radius: 5; background: #abf; }
+        div.unactive_conferences, div.unactive_conference { -moz-border-radius: 5; 
+            padding: 5px; margin: 3px; background: #abf; }
+        div.unactive_conference { margin: 3px; background: #fbb; }
+        .toggle_sibling + div { display: none; }
+        .toggle_sibling:after { content: " {% trans "click to toggle" %}"; font-size: 0.5em; }
     </style>
     <script src="/bin/jquery-1.3.1.min.js"></script>
     <script>
         toggle_sibling = function(){
-            $(this.nextSibling.nextSibling).toggle();
+            $(this.nextSibling.nextSibling).toggle("slow");
         }
         $(document).ready(function(){
             $(".toggle_sibling").click(toggle_sibling);
@@ -59,18 +63,16 @@
         </table>
     </div>
     {% endfor %}
-    <h2 class="toggle_sibling">{% trans "Unactive conferences" %}</h2>
+    <h1 class="toggle_sibling">{% trans "Unactive conferences" %}</h1>
     <div class="unactive_conferences">
     {% for conf in object_list %}
+    <div class="unactive_conference">
         <h2>{{ conf }} <a href="{% url conference.views.list do="start" cnf=conf.id id=0 %}">{% trans "Start" %}</a></h2>
-        <table>
         {% for phone in conf.participants.all %}
-            <tr>
-                <td>{{ phone.name }}</td>
-                <td>{{ phone.number }}</td>
-            </tr>
+            {{ phone }}{% if not forloop.last %}, {% endif %}
         {% endfor %}
         </table>
+    </div>
     {% endfor %}
     </div>
 {% endblock %}

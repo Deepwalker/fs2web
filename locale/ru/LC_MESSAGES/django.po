@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-14 23:04+0700\n"
+"POT-Creation-Date: 2009-06-15 00:36+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr "Активен?"
 msgid "Conference"
 msgstr "Конференция"
 
-#: conference/models.py:23 templates/base.html:28 templates/confrences.html:11
+#: conference/models.py:23 templates/base.html:29 templates/confrences.html:25
 #: templates/index.html:8
 msgid "Conferences"
 msgstr "Конференции"
@@ -147,13 +147,13 @@ msgstr "Редактировать"
 msgid "View on site"
 msgstr "Смотреть на сайте"
 
-#: dialplan/templates/dialplan.html:204 templates/base.html:29
+#: dialplan/templates/dialplan.html:204 templates/base.html:30
 msgid "Edit dialplan"
 msgstr "Редактирование номерного плана"
 
 #: dialplan/templates/dialplan.html:204
-msgid "Save"
-msgstr "Сохранить"
+msgid "Click to save"
+msgstr "Нажмите для сохранения"
 
 #: dialplan/templates/dialplan.html:261
 msgid "Add action"
@@ -163,67 +163,75 @@ msgstr "Добавить действие"
 msgid "Anti?"
 msgstr "Анти?"
 
-#: templates/base.html:27
+#: templates/base.html:28
 msgid "Main"
 msgstr "Главная"
 
-#: templates/confrences.html:12
+#: templates/confrences.html:26
 msgid "Renew"
 msgstr "Обновить"
 
-#: templates/confrences.html:14
+#: templates/confrences.html:29
 msgid "conference"
 msgstr "конференция"
 
-#: templates/confrences.html:16
+#: templates/confrences.html:29 templates/confrences.html.py:64
+msgid "click to toggle"
+msgstr "нажмите чтобы скрыть/раскрыть"
+
+#: templates/confrences.html:32
 msgid "Invite phone"
 msgstr "Вызвать телефонный номер"
 
-#: templates/confrences.html:19
+#: templates/confrences.html:35
 msgid "caller name"
 msgstr "Имя вызывающего"
 
-#: templates/confrences.html:20
+#: templates/confrences.html:36
 msgid "caller number"
 msgstr "Номер вызывающего"
 
-#: templates/confrences.html:21
+#: templates/confrences.html:37
 msgid "member id"
 msgstr "ID участника"
 
-#: templates/confrences.html:22
+#: templates/confrences.html:38
 msgid "can hear"
 msgstr "Слышит"
 
-#: templates/confrences.html:23
+#: templates/confrences.html:39
 msgid "can speak"
 msgstr "Может говорить"
 
-#: templates/confrences.html:24
+#: templates/confrences.html:40
 msgid "talking"
 msgstr "Говорит"
 
-#: templates/confrences.html:25
+#: templates/confrences.html:41
 msgid "uuid"
 msgstr "UUID"
 
-#: templates/confrences.html:37
+#: templates/confrences.html:53
 msgid "kick"
 msgstr "Выгнать"
 
-#: templates/confrences.html:38
+#: templates/confrences.html:54
 msgid "mute"
 msgstr "Заглушить"
 
-#: templates/confrences.html:39
+#: templates/confrences.html:55
 msgid "unmute"
 msgstr "Вернуть голос"
 
-#: templates/confrences.html:40
+#: templates/confrences.html:57
 msgid "Reinvite"
 msgstr "Вызвать снова"
 
-#: templates/confrences.html:46
+#: templates/confrences.html:63
+msgid "Unactive conferences"
+msgstr "Неактивные конференции"
+
+#: templates/confrences.html:67
 msgid "Start"
 msgstr "Запустить"
 
@@ -298,3 +306,6 @@ msgstr "Значение"
 #: users/models.py:60
 msgid "Groups"
 msgstr "Группы"
+
+#~ msgid "Save"
+#~ msgstr "Сохранить"
