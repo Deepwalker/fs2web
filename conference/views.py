@@ -6,7 +6,6 @@ from django.conf import settings
 from django.views.generic import list_detail
 from models import Conference
 from fsapi import *
-import syslog
 
 class InviteParticipantFrom(forms.Form):
     conference = forms.CharField(widget=forms.widgets.HiddenInput())

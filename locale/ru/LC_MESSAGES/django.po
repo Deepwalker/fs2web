@@ -1,0 +1,300 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-06-14 23:04+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: conference/models.py:9 conference/models.py:26 dialplan/models.py:7
+#: dialplan/models.py:15 dialplan/models.py:46 dialplan/models.py:65
+#: users/models.py:7 users/models.py:33
+msgid "Name"
+msgstr "Имя"
+
+#: conference/models.py:10 conference/models.py:27
+msgid "Number"
+msgstr "Номер"
+
+#: conference/models.py:11 users/models.py:17
+msgid "Password"
+msgstr "Пароль"
+
+#: conference/models.py:12 conference/models.py:38
+msgid "Phone"
+msgstr "Телефон"
+
+#: conference/models.py:13
+msgid "Is active?"
+msgstr "Активен?"
+
+#: conference/models.py:22
+msgid "Conference"
+msgstr "Конференция"
+
+#: conference/models.py:23 templates/base.html:28 templates/confrences.html:11
+#: templates/index.html:8
+msgid "Conferences"
+msgstr "Конференции"
+
+#: conference/models.py:28
+msgid "Auto call"
+msgstr "Автоматический вызов"
+
+#: conference/models.py:39
+msgid "Phones"
+msgstr "Телефоны"
+
+#: dialplan/models.py:11 users/models.py:18
+msgid "Context"
+msgstr "Контекст"
+
+#: dialplan/models.py:12
+msgid "Contexts"
+msgstr "Контексты"
+
+#: dialplan/models.py:16
+msgid "Continue on"
+msgstr "Продолжение в случае"
+
+#: dialplan/models.py:18 dialplan/models.py:37 dialplan/models.py:67
+msgid "Preference"
+msgstr "Порядок"
+
+#: dialplan/models.py:22
+msgid "Extension"
+msgstr "Модуль номерного плана"
+
+#: dialplan/models.py:23
+msgid "Extensions"
+msgstr "Модули номерного плана"
+
+#: dialplan/models.py:26
+msgid "on-false"
+msgstr "в случае ксли ложь"
+
+#: dialplan/models.py:27
+msgid "on-true"
+msgstr "в случае если правда"
+
+#: dialplan/models.py:28
+msgid "always"
+msgstr "в любой случае"
+
+#: dialplan/models.py:29
+msgid "never"
+msgstr "никогда"
+
+#: dialplan/models.py:33
+msgid "Field"
+msgstr "Критерий"
+
+#: dialplan/models.py:34
+msgid "Expression"
+msgstr "Выражение"
+
+#: dialplan/models.py:35
+msgid "Break on"
+msgstr "Прервать выполнение в случае"
+
+#: dialplan/models.py:42
+msgid "Condition"
+msgstr "Условие"
+
+#: dialplan/models.py:43
+msgid "Conditions"
+msgstr "Условия"
+
+#: dialplan/models.py:50
+msgid "Dialplan application"
+msgstr "Приложение норменого плана"
+
+#: dialplan/models.py:51
+msgid "Dialplan applications"
+msgstr "Приложения номерного плана"
+
+#: dialplan/models.py:66
+msgid "Anti action"
+msgstr "Анти-действие"
+
+#: dialplan/models.py:72
+msgid "Action"
+msgstr "Действие"
+
+#: dialplan/models.py:73
+msgid "Actions"
+msgstr "Действия"
+
+#: dialplan/templates/condition_inline.html:15
+msgid "Delete?"
+msgstr "Удалить?"
+
+#: dialplan/templates/condition_inline.html:16
+msgid "Edit"
+msgstr "Редактировать"
+
+#: dialplan/templates/condition_inline.html:28
+msgid "View on site"
+msgstr "Смотреть на сайте"
+
+#: dialplan/templates/dialplan.html:204 templates/base.html:29
+msgid "Edit dialplan"
+msgstr "Редактирование номерного плана"
+
+#: dialplan/templates/dialplan.html:204
+msgid "Save"
+msgstr "Сохранить"
+
+#: dialplan/templates/dialplan.html:261
+msgid "Add action"
+msgstr "Добавить действие"
+
+#: dialplan/templates/dialplan.html:264
+msgid "Anti?"
+msgstr "Анти?"
+
+#: templates/base.html:27
+msgid "Main"
+msgstr "Главная"
+
+#: templates/confrences.html:12
+msgid "Renew"
+msgstr "Обновить"
+
+#: templates/confrences.html:14
+msgid "conference"
+msgstr "конференция"
+
+#: templates/confrences.html:16
+msgid "Invite phone"
+msgstr "Вызвать телефонный номер"
+
+#: templates/confrences.html:19
+msgid "caller name"
+msgstr "Имя вызывающего"
+
+#: templates/confrences.html:20
+msgid "caller number"
+msgstr "Номер вызывающего"
+
+#: templates/confrences.html:21
+msgid "member id"
+msgstr "ID участника"
+
+#: templates/confrences.html:22
+msgid "can hear"
+msgstr "Слышит"
+
+#: templates/confrences.html:23
+msgid "can speak"
+msgstr "Может говорить"
+
+#: templates/confrences.html:24
+msgid "talking"
+msgstr "Говорит"
+
+#: templates/confrences.html:25
+msgid "uuid"
+msgstr "UUID"
+
+#: templates/confrences.html:37
+msgid "kick"
+msgstr "Выгнать"
+
+#: templates/confrences.html:38
+msgid "mute"
+msgstr "Заглушить"
+
+#: templates/confrences.html:39
+msgid "unmute"
+msgstr "Вернуть голос"
+
+#: templates/confrences.html:40
+msgid "Reinvite"
+msgstr "Вызвать снова"
+
+#: templates/confrences.html:46
+msgid "Start"
+msgstr "Запустить"
+
+#: templates/index.html:4
+msgid "Start page"
+msgstr "Стартовая страница"
+
+#: templates/index.html:7
+msgid "Admin interface"
+msgstr "Интерфейс администратора"
+
+#: templates/index.html:9
+msgid "Dialplan"
+msgstr "Номерной план"
+
+#: users/models.py:11 users/models.py:23
+msgid "Domain"
+msgstr "Домен"
+
+#: users/models.py:12
+msgid "Domains"
+msgstr "Домены"
+
+#: users/models.py:16
+msgid "User number"
+msgstr "Пользовательский номер"
+
+#: users/models.py:19
+msgid "Caller name"
+msgstr "Имя вызывающего"
+
+#: users/models.py:20
+msgid "Caller number"
+msgstr "Номер вызывающего"
+
+#: users/models.py:21
+msgid "Mailbox number"
+msgstr "Номер ящика голосовой почты"
+
+#: users/models.py:22
+msgid "Mailbox password"
+msgstr "Пароль от голосовой почты"
+
+#: users/models.py:24 users/models.py:59
+msgid "Group"
+msgstr "Группа"
+
+#: users/models.py:28
+msgid "User"
+msgstr "Пользователь"
+
+#: users/models.py:29
+msgid "Users"
+msgstr "Пользователи"
+
+#: users/models.py:34
+msgid "Param?"
+msgstr "Параметр?"
+
+#: users/models.py:38 users/models.py:42 users/models.py:48
+msgid "Variable"
+msgstr "Переменная"
+
+#: users/models.py:39 users/models.py:49
+msgid "Variables"
+msgstr "Переменные"
+
+#: users/models.py:43
+msgid "Value"
+msgstr "Значение"
+
+#: users/models.py:60
+msgid "Groups"
+msgstr "Группы"

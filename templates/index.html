@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block contents %}
-    <h1>Main page</h1>
+    <h1>{% trans "Start page" %}</h1>
 
 <ul>
-<li><a href="admin/">Управление пользователями через встроенную админку</a></li>
-<li><a href="confs/">Конференции</a></li>
-<li><a href="dialplan/edit/">Редактировать номерной план</a></li>
+<li><a href="admin/">{% trans "Admin interface" %}</a></li>
+<li><a href="confs/">{% trans "Conferences" %}</a></li>
+<li><a href="dialplan/edit/">{% trans "Dialplan" %}</a></li>
 
 {% endblock %}

@@ -1,2 +1,4 @@
 DIALTEMPLATE="user/%s@77.245.164.237"
 CONFERENCE_CID="300"
+
+FS_CONNECT_STR = "http://freeswitch:works@127.0.0.1:8080"

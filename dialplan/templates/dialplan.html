@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
     {% block head %}
     <style>
         div.context,div.ext,div.condition,div.action { -moz-border-radius: 10; }
@@ -200,7 +201,7 @@
     </script>
     {% endblock %}
 {% block contents %}
-    <h1>Edit dialplan <span id="SaveDP">Save</span></h1>
+    <h1>{% trans "Edit dialplan" %} <span id="SaveDP">{% trans "Save" %}</span></h1>
     <!-- Шаблоны -->
     <textarea id="context_template" style="display:none;">
     {for context in data}
@@ -257,10 +258,10 @@
             {/for}
             </div>
             <form class="add_action">
-                <span class="add_label">Add action</span>
+                <span class="add_label">{% trans "Add action" %}</span>
                 <input class="app" type="input"/>
                 <input class="param" type="input"/>
-                Anti? <input class="anti" type="checkbox"/>
+                {% trans "Anti?" %} <input class="anti" type="checkbox"/>
                 <input type="submit"/>
             </form>
           </div>
