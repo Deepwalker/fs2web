@@ -77,7 +77,7 @@
         <h3 class="toggle_sibling">{% trans "Update participants list" %}</h1>
         <div>
             <form method="POST" action="add/participants/{{ conf.id }}/">
-                {{ conf.participants_form }}
+                <div>{{ conf.participants_form.participants }}</div>
                 <input type="submit" value="{% trans "Update" %}"/>
             </form>
             <a href="{% url conference.views.del_conf object_id=conf.id %}">{% trans "Delete conference" %}</a>
