@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-15 00:36+0700\n"
+"POT-Creation-Date: 2009-06-15 13:03+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,42 +16,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: conference/models.py:9 conference/models.py:26 dialplan/models.py:7
+#: conference/models.py:10 conference/models.py:29 dialplan/models.py:7
 #: dialplan/models.py:15 dialplan/models.py:46 dialplan/models.py:65
 #: users/models.py:7 users/models.py:33
 msgid "Name"
 msgstr "Имя"
 
-#: conference/models.py:10 conference/models.py:27
+#: conference/models.py:11 conference/models.py:30
 msgid "Number"
 msgstr "Номер"
 
-#: conference/models.py:11 users/models.py:17
+#: conference/models.py:12 users/models.py:17
 msgid "Password"
 msgstr "Пароль"
 
-#: conference/models.py:12 conference/models.py:38
+#: conference/models.py:13 conference/models.py:41
 msgid "Phone"
 msgstr "Телефон"
 
-#: conference/models.py:13
+#: conference/models.py:14
 msgid "Is active?"
 msgstr "Активен?"
 
-#: conference/models.py:22
+#: conference/models.py:25
 msgid "Conference"
 msgstr "Конференция"
 
-#: conference/models.py:23 templates/base.html:29 templates/confrences.html:25
+#: conference/models.py:26 templates/base.html:30 templates/confrences.html:29
 #: templates/index.html:8
 msgid "Conferences"
 msgstr "Конференции"
 
-#: conference/models.py:28
+#: conference/models.py:31
 msgid "Auto call"
 msgstr "Автоматический вызов"
 
-#: conference/models.py:39
+#: conference/models.py:42
 msgid "Phones"
 msgstr "Телефоны"
 
@@ -147,7 +147,7 @@ msgstr "Редактировать"
 msgid "View on site"
 msgstr "Смотреть на сайте"
 
-#: dialplan/templates/dialplan.html:204 templates/base.html:30
+#: dialplan/templates/dialplan.html:204 templates/base.html:31
 msgid "Edit dialplan"
 msgstr "Редактирование номерного плана"
 
@@ -163,77 +163,97 @@ msgstr "Добавить действие"
 msgid "Anti?"
 msgstr "Анти?"
 
-#: templates/base.html:28
+#: templates/base.html:29
 msgid "Main"
 msgstr "Главная"
 
-#: templates/confrences.html:26
-msgid "Renew"
-msgstr "Обновить"
-
-#: templates/confrences.html:29
-msgid "conference"
-msgstr "конференция"
-
-#: templates/confrences.html:29 templates/confrences.html.py:64
+#: templates/confrences.html:15
 msgid "click to toggle"
 msgstr "нажмите чтобы скрыть/раскрыть"
 
-#: templates/confrences.html:32
+#: templates/confrences.html:30
+msgid "Renew"
+msgstr "Обновить"
+
+#: templates/confrences.html:33
+msgid "conference"
+msgstr "конференция"
+
+#: templates/confrences.html:36
 msgid "Invite phone"
 msgstr "Вызвать телефонный номер"
 
-#: templates/confrences.html:35
+#: templates/confrences.html:39
 msgid "caller name"
 msgstr "Имя вызывающего"
 
-#: templates/confrences.html:36
+#: templates/confrences.html:40
 msgid "caller number"
 msgstr "Номер вызывающего"
 
-#: templates/confrences.html:37
+#: templates/confrences.html:41
 msgid "member id"
 msgstr "ID участника"
 
-#: templates/confrences.html:38
+#: templates/confrences.html:42
 msgid "can hear"
 msgstr "Слышит"
 
-#: templates/confrences.html:39
+#: templates/confrences.html:43
 msgid "can speak"
 msgstr "Может говорить"
 
-#: templates/confrences.html:40
+#: templates/confrences.html:44
 msgid "talking"
 msgstr "Говорит"
 
-#: templates/confrences.html:41
+#: templates/confrences.html:45
 msgid "uuid"
 msgstr "UUID"
 
-#: templates/confrences.html:53
+#: templates/confrences.html:57
 msgid "kick"
 msgstr "Выгнать"
 
-#: templates/confrences.html:54
+#: templates/confrences.html:58
 msgid "mute"
 msgstr "Заглушить"
 
-#: templates/confrences.html:55
+#: templates/confrences.html:59
 msgid "unmute"
 msgstr "Вернуть голос"
 
-#: templates/confrences.html:57
+#: templates/confrences.html:61
 msgid "Reinvite"
 msgstr "Вызвать снова"
 
-#: templates/confrences.html:63
+#: templates/confrences.html:67
 msgid "Unactive conferences"
 msgstr "Неактивные конференции"
 
-#: templates/confrences.html:67
+#: templates/confrences.html:72
 msgid "Start"
 msgstr "Запустить"
+
+#: templates/confrences.html:77
+msgid "Update participants list"
+msgstr "Редактировать список участников"
+
+#: templates/confrences.html:81
+msgid "Update"
+msgstr "Сохранить"
+
+#: templates/confrences.html:83
+msgid "Delete conference"
+msgstr "Удалить конференцию"
+
+#: templates/confrences.html:88
+msgid "Create new conference"
+msgstr "Создать новую конференцию"
+
+#: templates/confrences.html:91
+msgid "Create"
+msgstr "Создать"
 
 #: templates/index.html:4
 msgid "Start page"
