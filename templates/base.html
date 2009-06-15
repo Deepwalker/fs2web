@@ -1,7 +1,8 @@
 {% load i18n %}
 <head>
     <style>
-        *, body, html { margin: none; padding: none; border: none; font-family:arial; }
+        /**, body, html { margin: none; padding: none; border: none; font-family:arial; }*/
+        *, body, html { font-family: arial; }
         h1,h2,h3 { font-style: italic; color: #434343; }
         .logo { font-size: 1.5em; }
         #contents h1 { font-size: 1.5em; }
@@ -31,6 +32,8 @@
     </div>
     <div id="contents">
         {% block contents %}
+        {% endblock %}
+        {% block admin_contents %}
         {% endblock %}
     </div>
 </body>

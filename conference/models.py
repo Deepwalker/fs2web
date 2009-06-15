@@ -1,13 +1,14 @@
 from django.db import models as m
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django import forms
 from fsapi import *
 
 # Create your models here.
 
 class Conference(m.Model):
-    name = m.CharField(_(u"Name"),max_length=254)
-    number = m.CharField(_(u"Number"),max_length=254)
+    name = m.CharField(_(u"Name"),max_length=254,blank=False)
+    number = m.CharField(_(u"Number"),max_length=254,blank=False)
     pin = m.IntegerField(_(u"Password"),max_length=254,blank=True,null=True)
     participants = m.ManyToManyField("Phone",verbose_name=_(u"Phone"))
     is_active = m.BooleanField(_(u"Is active?"),default=False,editable=False)
@@ -16,6 +17,8 @@ class Conference(m.Model):
         if participants:
             for p in participants:
                 call_from_conference(self.number,p.number)
+    def participants_form(self):
+        return AddParticipant(instance=self)
     def __unicode__(self):
         return self.name
     class Meta:
@@ -33,7 +36,22 @@ class Phone(m.Model):
     def member(self):
         return self
     def __unicode__(self):
-        return "%s (%s)"%(self.name,self.number)
+        return "%s (%s)%s"%(self.name,self.number,"" if self.auto_call else "!")
     class Meta:
         verbose_name = _(u"Phone")
         verbose_name_plural = _(u"Phones")
+
+# Forms
+class AddParticipant(forms.ModelForm):
+    class Meta:
+        model = Conference
+        fields = ['participants']
+
+class InviteParticipantForm(forms.Form):
+    conference = forms.CharField(widget=forms.widgets.HiddenInput())
+    phone = forms.CharField()
+
+class AddConference(forms.ModelForm):
+    class Meta:
+        model = Conference
+        fields = ['name','number']
