@@ -2,7 +2,6 @@
 from local_settings import *
 
 import os
-#BP = '/home/krivushinme/python/fs2web/'
 BP = os.path.realpath(os.path.curdir) + '/'
 BP = os.path.dirname(__file__) + '/'
 
@@ -88,6 +87,5 @@ INSTALLED_APPS = (
     'users',
     'conference',
     'dialplan',
-#    'django_evolution',
 )
 
