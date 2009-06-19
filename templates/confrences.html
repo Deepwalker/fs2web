@@ -7,6 +7,7 @@
         th { color: #06515F; }
         td { border: 1px solid #0777A0; }
         tr.kicked { background-color: #fbb; }
+        tr.muted { background-color: #bbb; }
         div.conference_block { -moz-border-radius: 5; padding: 2px; margin: 3px; border: 1px solid #0777A0; }
         div.unactive_conferences, div.unactive_conference { -moz-border-radius: 5; 
             padding: 5px; margin: 3px; background: #abf; }
@@ -45,7 +46,7 @@
                 <th>{% trans "uuid" %}</th>
             </tr>
             {% for m in c.1 %}
-            <tr{% if not m.uuid %} class="kicked"{% endif %}>
+            <tr class="{% if not m.uuid %}kicked{% endif %}{% if not m.flags.can_speak %} muted{% endif %}">
                 <td>{{ m.caller_id_name }}</td>
                 <td>{{ m.caller_id_number }}</td>
                 <td>{{ m.id }}</td>

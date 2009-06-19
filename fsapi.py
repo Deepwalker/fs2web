@@ -1,9 +1,9 @@
 from xmlrpclib import ServerProxy
 from django.conf import settings
-from django.views.decorators.cache import cache
+#from django.views.decorators.cache import cache
 import syslog
 
-def fsapi(*args,cache=False,**kwargs):
+def fsapi(*args,**kwargs):
     #TODO caching 
     server = ServerProxy(settings.FS_CONNECT_STR)
     syslog.syslog(str(args)+"; "+str(kwargs))
