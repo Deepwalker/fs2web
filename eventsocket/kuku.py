@@ -17,6 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+# Connect Django ORM
+from django.core.management import setup_environ
+import settings
+setup_environ(settings)
+
 from Queue import Queue
 from eventsocket import EventProtocol
 from twisted.internet import reactor, protocol
@@ -29,7 +34,7 @@ unique_id = {}
 class InboundProxy(EventProtocol):
     def __init__(self):
 	self.job_uuid = {}
-	self.calls = Queue()
+	self.conf_msgs = Queue()
 	EventProtocol.__init__(self)
 
     def authSuccess(self, ev):
@@ -42,12 +47,21 @@ class InboundProxy(EventProtocol):
 	self.factory.reconnect = False
 	self.exit()
 
+    def apiSuccess(self, ev):
+        from conference.models import *
+        print "api",ev
+        #participant = ev['data']['rawresponse']
+        #print Participant.objects.get
+
     def onCustom(self, data):
         pprint.pprint(data)
         if data.Event_Subclass == 'conference::dtmf':
             print data.conference
         elif data.Event_Subclass == 'conference::maintenance':
             print data.Action
+            self.api("uuid_dump %s"%data.Unique_ID)
+            self.conf_msgs.put(data)
+
             if data.Action == 'add-member':
                 print "member added", data.Member_ID
             elif data.Action == 'del-member':

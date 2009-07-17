@@ -10,13 +10,15 @@ class Conference(m.Model):
     name = m.CharField(_(u"Name"),max_length=254,blank=False)
     number = m.CharField(_(u"Number"),max_length=254,blank=False)
     pin = m.IntegerField(_(u"Password"),max_length=254,blank=True,null=True)
-    participants = m.ManyToManyField("Phone",verbose_name=_(u"Phone"))
+    participants = m.ManyToManyField("Phone",verbose_name=_(u"Phone"),through='Participant')
     is_active = m.BooleanField(_(u"Is active?"),default=False,editable=False)
     def start(self):
-        participants = list(self.participants.filter(auto_call=True))
+        #participants = list(self.participants.filter(auto_call=True))
+        # TODO: auto_call filter
+        participants = self.participant_set.all()
         if participants:
             for p in participants:
-                call_from_conference(self.number,p.number,vars='[participant=%s]'%p.id)
+                call_from_conference(self.number,p.phone.number,vars='participant=%s'%p.id)
     def participants_form(self):
         return AddParticipant(instance=self)
     def __unicode__(self):
@@ -54,6 +56,13 @@ class AddParticipant(forms.ModelForm):
     class Meta:
         model = Conference
         fields = ['participants']
+    def save(self):
+        print self.cleaned_data
+        for p in self.cleaned_data['participants']:
+            Participant.objects.get_or_create(conference=self.instance,phone=p)
+        Participant.objects.filter(conference=self.instance).\
+            exclude(phone__in=self.cleaned_data['participants']).delete()
+        
 
 class InviteParticipantForm(forms.Form):
     conference = forms.CharField(widget=forms.widgets.HiddenInput())

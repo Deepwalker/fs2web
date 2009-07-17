@@ -1,4 +1,5 @@
-DIALTEMPLATE="user/%s@77.245.164.237"
+#DIALTEMPLATE="user/%s@10.254.131.115"
+DIALTEMPLATE="sofia/gateway/asterisk/%s"
 CONFERENCE_CID="300"
 
 FS_CONNECT_STR = "http://freeswitch:works@127.0.0.1:8080"
