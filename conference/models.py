@@ -57,7 +57,6 @@ class AddParticipant(forms.ModelForm):
         model = Conference
         fields = ['participants']
     def save(self):
-        print self.cleaned_data
         for p in self.cleaned_data['participants']:
             Participant.objects.get_or_create(conference=self.instance,phone=p)
         Participant.objects.filter(conference=self.instance).\

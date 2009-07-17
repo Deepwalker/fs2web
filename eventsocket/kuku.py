@@ -1,29 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
-# freeswitch's event socket protocol for twisted
-# Copyright (C) 2009  Alexandre Fiori & Arnaldo Pereira
-# 
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-# 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # Connect Django ORM
 from django.core.management import setup_environ
 import settings
 setup_environ(settings)
+from conference.models import *
+
+from debug import debug
 
 from Queue import Queue
-from eventsocket import EventProtocol
+from eventsocket import EventProtocol, superdict
 from twisted.internet import reactor, protocol
 
 import pprint
@@ -48,10 +35,46 @@ class InboundProxy(EventProtocol):
 	self.exit()
 
     def apiSuccess(self, ev):
-        from conference.models import *
-        print "api",ev
-        #participant = ev['data']['rawresponse']
-        #print Participant.objects.get
+        #debug("api %s"%ev)
+        temp = self.conf_msgs.get()
+        context = temp['context']
+
+        if context == 'conference':
+            data = temp['data']
+            raw = ev['data']['rawresponse']
+            if '-ERR No Such Channel' in raw:
+                self.conf_msgs.put(data)
+                self.apiFailure(self,None)
+                return
+            apidata = superdict([[elem.replace('-','_') for elem in line.strip().split(': ',1)] 
+                        for line in raw.strip().split('\n') if line])
+            #pprint.pprint(apidata)
+            print "done, %s"%data.Unique_ID
+
+            p = Participant.objects.filter(phone__number=data.Caller_Caller_ID_Number,
+                    conference__number=data.Conference_Name)
+            p = None
+            print p
+            if p:
+                p=p[0]
+                if data.Action == 'add-member':
+                    p.active=True
+                elif data.Action == 'del-member':
+                    p.active=False
+                elif data.Action == 'start-talking':
+                    print "start talk"
+                elif data.Action == 'stop-talking':
+                    print "stop talk"
+                elif data.Action == 'mute-member':
+                    print "mute"
+                elif data.Action == 'unmute-member':
+                    print "unmute"
+                p.save()
+
+
+    def apiFailure(self, failure):
+        data = self.conf_msgs.get()
+        debug("It seems that UUID %s is gone"%data.Unique_ID)
 
     def onCustom(self, data):
         pprint.pprint(data)
@@ -59,8 +82,8 @@ class InboundProxy(EventProtocol):
             print data.conference
         elif data.Event_Subclass == 'conference::maintenance':
             print data.Action
+            self.conf_msgs.put({'data':data,'context':'conference'})
             self.api("uuid_dump %s"%data.Unique_ID)
-            self.conf_msgs.put(data)
 
             if data.Action == 'add-member':
                 print "member added", data.Member_ID
