@@ -39,27 +39,25 @@
             <tr>
                 <th>{% trans "caller name" %}</th>
                 <th>{% trans "caller number" %}</th>
-                <th>{% trans "member id" %}</th>
                 <th>{% trans "can hear" %}</th>
                 <th>{% trans "can speak" %}</th>
                 <th>{% trans "talking" %}</th>
-                <th>{% trans "uuid" %}</th>
             </tr>
             {% for m in c.1 %}
             <tr class="{% if not m.uuid %}kicked{% else %}{% if not m.flags.can_speak %} muted{% endif %}{% endif %}">
                 <td>{{ m.caller_id_name }}</td>
                 <td>{{ m.caller_id_number }}</td>
-                <td>{{ m.id }}</td>
                 <td>{{ m.flags.can_hear }}</td>
                 <td>{{ m.flags.can_speak }}</td>
                 <td>{{ m.flags.talking }}</td>
-                <td>{{ m.uuid }}</td>
                 <td>{{ m.member }}</td>
-                <td><a href="/confs/{{ c.0 }}/kick/{{ m.id }}/">{% trans "kick" %}</a></td>
-                <td><a href="/confs/{{ c.0 }}/mute/{{ m.id }}/">{% trans "mute" %}</a></td>
-                <td><a href="/confs/{{ c.0 }}/unmute/{{ m.id }}/">{% trans "unmute" %}</a></td>
+                <td><a href="/confs/{{ c.0 }}/kick/{{ m.id }}/" title="{% trans "kick" %}">X</a><br>
+                    <a href="/confs/{{ c.0 }}/mute/{{ m.id }}/" title="{% trans "mute" %}">M</a><br>
+                    <a href="/confs/{{ c.0 }}/unmute/{{ m.id }}/" title="{% trans "unmute" %}">m</a></td>
                 {% if not m.uuid %}<td><a href="?conference={{ c.0 }}&phone={{ m.number }}">
                     {% trans "Reinvite" %}</a></td>{% endif %}
+                <td>{{ m.id }}</td>
+                <td>{{ m.uuid }}</td>
             </tr>
             {% endfor %}
         </table>

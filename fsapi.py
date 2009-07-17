@@ -9,6 +9,6 @@ def fsapi(*args,**kwargs):
     syslog.syslog(str(args)+"; "+str(kwargs))
     return server.freeswitch.api(*args,**kwargs)
 
-def call_from_conference(conf,number,conf_cid=settings.CONFERENCE_CID):
-    fsapi("bgapi","conference %s@default dial "%conf + settings.DIALTEMPLATE%number+" %s %s"%(conf_cid,number))
+def call_from_conference(conf,number,conf_cid=settings.CONFERENCE_CID,vars=''):
+    fsapi("bgapi","{%s}conference %s@default dial "%(vars,conf) + settings.DIALTEMPLATE%number+" %s %s"%(conf_cid,number))
 

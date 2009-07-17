@@ -16,7 +16,7 @@ class Conference(m.Model):
         participants = list(self.participants.filter(auto_call=True))
         if participants:
             for p in participants:
-                call_from_conference(self.number,p.number)
+                call_from_conference(self.number,p.number,vars='[participant=%s]'%p.id)
     def participants_form(self):
         return AddParticipant(instance=self)
     def __unicode__(self):
@@ -40,6 +40,14 @@ class Phone(m.Model):
     class Meta:
         verbose_name = _(u"Phone")
         verbose_name_plural = _(u"Phones")
+
+class Participant(m.Model):
+    conference = m.ForeignKey(Conference)
+    phone = m.ForeignKey(Phone)
+    active = m.BooleanField(_(u"Active"),default=False,editable=False)
+    mute = m.BooleanField(_(u"Mute"),default=False,editable=False)
+    talk = m.BooleanField(_(u"Talk"),default=False,editable=False)
+    deaf = m.BooleanField(_(u"Deaf"),default=False,editable=False)
 
 # Forms
 class AddParticipant(forms.ModelForm):
