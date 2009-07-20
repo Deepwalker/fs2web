@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Connect Django ORM
-from django.core.management import setup_environ
-import settings
-setup_environ(settings)
-from conference.models import *
 
 from debug import debug
 
@@ -15,8 +10,17 @@ from twisted.internet import reactor, protocol
 
 import pprint
 
+# Connect Django ORM
+from django.core.management import setup_environ
+import settings
+setup_environ(settings)
+from conference.models import *
+
 port = 1905
 unique_id = {}
+
+conferences = {}
+channels = {}
 
 class InboundProxy(EventProtocol):
     def __init__(self):
@@ -25,7 +29,7 @@ class InboundProxy(EventProtocol):
 	EventProtocol.__init__(self)
 
     def authSuccess(self, ev):
-        self.eventplain('CUSTOM conference::maintenance conference::dtmf')
+        self.eventplain('CHANNEL_CREATE CHANNEL_DESTROY CUSTOM conference::maintenance conference::dtmf')
 
     def authFailure(self, failure):
 	self.factory.reconnect = False
@@ -34,20 +38,37 @@ class InboundProxy(EventProtocol):
 	self.factory.reconnect = False
 	self.exit()
 
-    def apiSuccess(self, ev):
-        #debug("api %s"%ev)
-        temp = self.conf_msgs.get()
-        context = temp['context']
+    def onChannelCreate(self,data):
+        pprint.pprint(data)
+        channels[data.Unique_ID] = data
+        print channels
+        self.api("uuid_dump %s"%data.Unique_ID)
 
+    def onChannelDestroy(self,data):
+        pprint.pprint(data)
+        del channels[data.Unique_ID]
+        print channels
+
+    def apiSuccess(self, ev):
+        # Update channel data with uuid_dump result
+        raw = ev['data']['rawresponse']
+        if '-ERR' == raw[:4]:
+            print 'ERROR!'
+            return
+        temp = [line.strip().split(': ',1) for line in raw.strip().split('\n') if line]
+        apidata = superdict([(line[0].replace('-','_'),line[1]) for line in temp])
+        channels[apidata.Unique_ID].update(apidata)
+        channel = channels[apidata.Unique_ID]
+        kuku = channel.get('variable_kuku',None)
+        print "Channel ",channel.Unique_ID,kuku
+
+    def zaglushka(self):
         if context == 'conference':
             data = temp['data']
-            raw = ev['data']['rawresponse']
-            if '-ERR No Such Channel' in raw:
+            if 1==1:
                 self.conf_msgs.put(data)
                 self.apiFailure(self,None)
                 return
-            apidata = superdict([[elem.replace('-','_') for elem in line.strip().split(': ',1)] 
-                        for line in raw.strip().split('\n') if line])
             #pprint.pprint(apidata)
             print "done, %s"%data.Unique_ID
 
@@ -71,24 +92,28 @@ class InboundProxy(EventProtocol):
                     print "unmute"
                 p.save()
 
-
-    def apiFailure(self, failure):
-        data = self.conf_msgs.get()
-        debug("It seems that UUID %s is gone"%data.Unique_ID)
-
     def onCustom(self, data):
-        pprint.pprint(data)
+        #pprint.pprint(data)
+        channels[data.Unique_ID].update(data)
+        channel = channels[data.Unique_ID]
+
         if data.Event_Subclass == 'conference::dtmf':
             print data.conference
         elif data.Event_Subclass == 'conference::maintenance':
             print data.Action
-            self.conf_msgs.put({'data':data,'context':'conference'})
-            self.api("uuid_dump %s"%data.Unique_ID)
-
+            #self.conf_msgs.put({'data':data,'context':'conference'})
+            #self.api("uuid_dump %s"%data.Unique_ID)
             if data.Action == 'add-member':
-                print "member added", data.Member_ID
+                if not data.Conference_Name in conferences:
+                    conferences[data.Conference_Name] = {}
+                conferences[data.Conference_Name][channel.Unique_ID]=channel
+                pprint.pprint(conferences[data.Conference_Name])
             elif data.Action == 'del-member':
-                print "member deleted"
+                if data.Conference_Name in conferences and channel.Unique_ID in conferences[data.Conference_Name]:
+                    del conferences[data.Conference_Name][channel.Unique_ID]
+                    if not conferences[data.Conference_Name]:
+                        del conferences[data.Conference_Name]
+                print channels
             elif data.Action == 'start-talking':
                 print "start talk"
             elif data.Action == 'stop-talking':
@@ -115,60 +140,7 @@ class InboundFactory(protocol.ClientFactory):
 	print '[inboundfactoy] cannot connect: %s' % reason
 	reactor.stop()
 
-class OutboundProxy(EventProtocol):
-    def __init__(self):
-	self.ext = None
-	self.debug_enabled = False
-	EventProtocol.__init__(self)
-
-    # when we get connection from fs, send "connect"
-    def connectionMade(self):
-	self.connect()
-
-    # when we get OK from connect, send "myevents"
-    def connectSuccess(self, ev):
-	self.ext = unique_id[ev.Unique_ID]
-	print '[outboundproxy] started controlling extension %s' % self.ext
-	self.myevents()
-
-    # after we get OK for myevents, send "answer".
-    def myeventsSuccess(self, ev):
-        self.answer()
-
-    # when we get OK from answer, play something. Note: on default FreeSWITCH
-    # deployments, the sounds directory is usually /usr/local/freeswitch/sounds
-    def answerSuccess(self, ev):
-	print '[outboundproxy] going to play audio file for extension %s' % self.ext
-	self.playback('/opt/freeswitch/sounds/en/us/callie/ivr/8000/ivr-sample_submenu.wav',
-	    terminators='123*#')
-
-    # well well...
-    def onDtmf(self, data):
-	print '[outboundproxy] got dtmf "%s" from extension %s' % (data.DTMF_Digit, self.ext)
-
-    # finished executing something
-    def onChannelExecuteComplete(self, data):
-	app = data.variable_current_application
-	if app == 'playback':
-	    terminator = data.get('variable_playback_terminator_used')
-            response = data.get('variable_current_application_response')
-	    print '[outboundproxy] extension %s finished playing file, terminator=%s, response=%s' % (self.ext, terminator, response)
-	    print '[outboundproxy] bridging extension %s to public conference 888' % self.ext
-	    self.bridge('sofia/external/888@conference.freeswitch.org')
-
-	# it could also be done by onChannelUnbridge
-	elif app == 'bridge':
-	    print '[outboundproxy] extension %s finished the bridge' % self.ext
-	    self.hangup()
-    
-    # goodbye...
-    def exitSuccess(self, ev):
-	print '[outboundproxy] control of extension %s has finished' % self.ext
-
-class OutboundFactory(protocol.ServerFactory):
-    protocol = OutboundProxy
 
 if __name__ == '__main__':
-    reactor.listenTCP(port, OutboundFactory())
     reactor.connectTCP('localhost', 8021, InboundFactory('ClueCon'))
     reactor.run()
