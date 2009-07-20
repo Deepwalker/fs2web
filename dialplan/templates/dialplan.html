@@ -37,15 +37,15 @@
                 if (e.which == 13){
                     var t = $(e.target.parentNode);
                     var val = $(e.target).val()
-                    t.unbind("keypress")
-                        .click(click_fne)
+                    t.removeClass("pressable")
+                        .addClass("editable")
                         .html(val);
                     t.attr("iH",val);
                 };
                 if (e.which == 0 ){
                     var t = $(e.target.parentNode);
-                    t.unbind("keypress")
-                        .click(click_fne)
+                    t.removeClass("pressable")
+                        .addClass("editable")
                         .html(t.attr("iH"));
                 };
                 console.log(e.which);
@@ -58,56 +58,59 @@
                     iH = th.attr('iH');
                 };
                 th.html("<input id=\"current_edit_param\" value=\""+iH+"\"/>")
-                    .unbind("click")
-                    .keypress(enter_fne);
+                    .removeClass("editable")
+                    .addClass("pressable");
                 //TODO сделать фокус
                 $("input",th).focus();
 
             };
-            $(".editable").click(click_fne);
+            $(".editable").live("click",click_fne);
+            $(".pressable").live("keypress",enter_fne);
             
             //Добавление Extension
-            $("form.add_ext").submit(function(){
-                ext_name = $("input.name",this).val();
-                continue_on = $("input.continue,this").attr("checked");
-                $(".exts",this.parentNode).append(
-                   TrimPath.processDOMTemplate("ext_template",{'data':{
-                            'name':ext_name,
-                            'continue_on':continue_on,
-                            'conditions':[],
-                            'id':null,
-                        }}));
-                return false;
-            });
-            // Add Condition
-            $("form.add_condition").submit(function(){
-                field = $("input.field",this).val();
-                exp = $("input.expression",this).val();
-                break_on = $("select",this).val();
-                new_c = TrimPath.processDOMTemplate("condition_template",{'data':{
-                            'field':field,
-                            'expression':exp,
-                            'break_on':break_on,
-                            'actions':[],
-                            'id':null,
-                        }});
-                $(".conditions",this.parentNode).append(new_c);
-                return false;
-            });
-            // Add Action
-            $("form.add_action").submit(function(){
-                app = $("input.app",this).val();
-                param = $("input.param",this).val();
-                anti = $("input.anti",this).attr("checked");
-                $(".actions",this.parentNode).append(
-                   TrimPath.processDOMTemplate("act_template",{'data':{
-                            'app_name':app,
-                            'params':param,
-                            'anti':anti,
-                            'id':null,
-                        }}));
-                return false;
-            });
+            $("#contents").submit(function(ev){
+                th=$(ev.target) 
+                obj = ev.target
+                if(th.hasClass("add_ext")){
+                    ext_name = $("input.name",obj).val();
+                    continue_on = $("input.continue",obj).attr("checked");
+                    th.parent().children(".exts").append(
+                       TrimPath.processDOMTemplate("ext_template",{'data':{
+                                'name':ext_name,
+                                'continue_on':continue_on,
+                                'conditions':[],
+                                'id':null,
+                            }}));
+                    return false;
+                }
+                if(th.hasClass("add_action")){
+                    app = $("input.app",obj).val();
+                    param = $("input.param",obj).val();
+                    anti = $("input.anti",obj).attr("checked");
+                    th.parent().children(".actions").append(
+                        TrimPath.processDOMTemplate("act_template",{'data':{
+                                'app_name':app,
+                                'params':param,
+                                'anti':anti,
+                                'id':null,
+                            }}));
+                    return false;
+                }
+                if(th.hasClass("add_condition")){
+                    field = $("input.field",obj).val();
+                    exp = $("input.expression",obj).val();
+                    break_on = $("select",obj).val();
+                    new_c = TrimPath.processDOMTemplate("condition_template",{'data':{
+                                'field':field,
+                                'expression':exp,
+                                'break_on':break_on,
+                                'actions':[],
+                                'id':null,
+                            }});
+                    th.parent().children(".conditions").append(new_c);
+                    return false;
+                }
+            })
             // action|anti-action
             $(".action_pref").click(function(){
                 act = this.innerHTML;
