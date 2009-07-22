@@ -4,10 +4,11 @@
 
 from debug import debug
 
-from Queue import Queue
 from eventsocket import EventProtocol, superdict
 from twisted.internet import reactor, protocol
-
+from twisted.web import xmlrpc, server
+from Queue import Queue
+import pickle
 import pprint
 
 # Connect Django ORM
@@ -140,7 +141,13 @@ class InboundFactory(protocol.ClientFactory):
 	print '[inboundfactoy] cannot connect: %s' % reason
 	reactor.stop()
 
+class XMLRPCInterface(xmlrpc.XMLRPC):
+    def xmlrpc_info(self):
+        print conferences
+        return conferences
 
 if __name__ == '__main__':
     reactor.connectTCP('localhost', 8021, InboundFactory('ClueCon'))
+    xmlrpc_interface = XMLRPCInterface()
+    reactor.listenTCP(7080,server.Site(xmlrpc_interface))
     reactor.run()
