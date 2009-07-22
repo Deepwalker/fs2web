@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-
 from debug import debug
 
 from eventsocket import EventProtocol, superdict
