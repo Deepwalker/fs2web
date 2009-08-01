@@ -143,7 +143,7 @@ class InboundFactory(protocol.ClientFactory):
 class XMLRPCInterface(xmlrpc.XMLRPC):
     def xmlrpc_info(self):
         print conferences
-        return conferences
+        return pickle.dumps(conferences)
 
 if __name__ == '__main__':
     reactor.connectTCP('localhost', 8021, InboundFactory('ClueCon'))
