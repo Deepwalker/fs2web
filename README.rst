@@ -30,18 +30,17 @@ Installation
 
 В conf/autoload_configs/xml_curl.conf.xml:
 
-
-<configuration name="xml_curl.conf" description="cURL XML Gateway">
-  <bindings>
-    <binding name="fs2web_user_fetcher">
-        <param name="gateway-url" value="http://127.0.0.1:8000/user/get/" bindings="directory"/>
-    </binding>
-    <binding name="fs2web_dialplan_fetcher">
-        <param name="gateway-url" value="http://127.0.0.1:8000/dialplan/get/" bindings="dialplan"/>
-    </binding>
-  </bindings>
-</configuration>
-
+::
+  <configuration name="xml_curl.conf" description="cURL XML Gateway">
+    <bindings>
+      <binding name="fs2web_user_fetcher">
+          <param name="gateway-url" value="http://127.0.0.1:8000/user/get/" bindings="directory"/>
+      </binding>
+      <binding name="fs2web_dialplan_fetcher">
+          <param name="gateway-url" value="http://127.0.0.1:8000/dialplan/get/" bindings="dialplan"/>
+      </binding>
+    </bindings>
+  </configuration>
 
 
 И включить загрузку модуля xml_curl в conf/autoload_configs/modules.conf.xml 
