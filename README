@@ -9,10 +9,10 @@ Fs2web
 Introduction
 ============
 
-**Fs2web** is the Django_ based Web UI for FreeSWITCH_.
+Fs2web is the Django based Web UI for FreeSWITCH.
 
-.. _Django: http://www.djangoproject.com/
-.. _FreeSWITCH: http://freeswitch.org
+Django: http://www.djangoproject.com/
+FreeSWITCH: http://freeswitch.org
 
 Requirements
 ============
@@ -30,7 +30,6 @@ Installation
 
 В conf/autoload_configs/xml_curl.conf.xml:
 
-::
   <configuration name="xml_curl.conf" description="cURL XML Gateway">
     <bindings>
       <binding name="fs2web_user_fetcher">
