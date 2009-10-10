@@ -14,4 +14,4 @@ admin.site.register(FSUser,FSUAdmin)
 admin.site.register(FSGroup)
 admin.site.register(FSDomain)
 
-admin.site.register(gateway)
+admin.site.register(FSGateway)

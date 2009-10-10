@@ -35,28 +35,40 @@
           {% endif %}
         </variables>
         <gateways>
-         {% for gw in user.gateway_set.all %}
+         {% for gw in user.fsgateway_set.all %}
           <gateway name="{{ gw.name }}">
               <!--/// account username *required* ///-->
               <param name="username" value="{{ gw.username }}"/>
               <!--/// auth realm: *optional* same as gateway name, if blank ///-->
               <param name="realm" value="{{ gw.realm }}"/>
               <!--/// username to use in from: *optional* same as  username, if blank ///-->
+              {% if gw.from_user %}
               <param name="from-user" value="{{ gw.from_user }}"/>
+              {% endif %}
               <!--/// domain to use in from: *optional* same as  realm, if blank ///-->
+              {% if gw.from_domain %}
               <param name="from-domain" value="{{ gw.from_domain }}"/>
+              {% endif %}
               <!--/// account password *required* ///-->
               <param name="password" value="{{ gw.password }}"/>
               <!--/// replace the INVITE from user with the channel's caller-id ///-->
               <param name="caller-id-in-from" value="{{ gw.caller_id_in_form }}"/>
+              {% if gw.extension %}
               <!--/// extension for inbound calls: *optional* same as username, if blank ///-->
               <param name="extension" value="{{ gw.extension }}"/>
+              {% endif %}
+              {% if gw.proxy %}
               <!--/// proxy host: *optional* same as realm, if blank ///-->
               <param name="proxy" value="{{ gw.proxy }}"/>
+              {% endif %}
+              {% if gw.register_proxy %}
               <!--/// send register to this proxy: *optional* same as proxy, if blank ///-->
               <param name="register-proxy" value="{{ gw.register_proxy }}"/>
+              {% endif %}
+              {% if gw.expire_seconds %}
               <!--/// expire in seconds: *optional* 3600, if blank ///-->
               <param name="expire-seconds" value="{{ gw.expire_seconds }}"/>
+              {% endif %}
               <!--/// do not register ///-->
               <param name="register" value="{{ gw.register }}"/>
               <!-- which transport to use for register -->
@@ -65,8 +77,10 @@
               <param name="retry-seconds" value="{{ gw.retry_seconds }}"/>
               <!--extra sip params to send in the contact-->
               <param name="contact-params" value="{{ gw.contact_params }}"/>
+              {% if gw.ping %}
               <!--send an options ping every x seconds, failure will unregister and/or mark it down-->
               <param name="ping" value="{{ gw.ping }}"/>
+              {% endif %}
           </gateway>
          {% endfor %}
         </gateways>

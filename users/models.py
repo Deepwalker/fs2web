@@ -63,24 +63,24 @@ TRANSPORT = (
     ("udp","udp"),
     ("tcp","tcp"),
 )
-class gateway(m.Model):
+class FSGateway(m.Model):
     "Gateway model"
     name = m.CharField(max_length=255)
     username = m.CharField(max_length=255)
     realm = m.CharField(max_length=255)
-    from_user = m.CharField(max_length=255)
-    from_domain = m.CharField(max_length=255)
+    from_user = m.CharField(max_length=255,blank=True,null=True)
+    from_domain = m.CharField(max_length=255,blank=True,null=True)
     password = m.CharField(max_length=255)
-    extension = m.CharField(max_length=255)
-    proxy = m.CharField(max_length=255)
-    register_proxy = m.CharField(max_length=255)
-    expire_seconds = m.IntegerField()
-    register = m.BooleanField()
+    extension = m.CharField(max_length=255,blank=True,null=True)
+    proxy = m.CharField(max_length=255,blank=True,null=True)
+    register_proxy = m.CharField(max_length=255,blank=True,null=True)
+    expire_seconds = m.IntegerField(blank=True,null=True)
+    register = m.BooleanField(default=True)
     register_transport = m.CharField(max_length=4,choices=TRANSPORT)
-    retry_seconds = m.IntegerField()
-    caller_id_in_form = m.BooleanField()
-    contact_params = m.CharField(max_length=255)
-    ping = m.IntegerField()
+    retry_seconds = m.IntegerField(default=10)
+    caller_id_in_form = m.BooleanField(default=False)
+    contact_params = m.CharField(max_length=255,blank=True,null=True)
+    ping = m.IntegerField(blank=True,null=True)
 
     user = m.ForeignKey(FSUser,blank=True,null=True)
     domain = m.ForeignKey(FSDomain)
