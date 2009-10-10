@@ -34,6 +34,42 @@
             {% endfor %}
           {% endif %}
         </variables>
+        <gateways>
+         {% for gw in user.gateway_set.all %}
+          <gateway name="{{ gw.name }}">
+              <!--/// account username *required* ///-->
+              <param name="username" value="{{ gw.username }}"/>
+              <!--/// auth realm: *optional* same as gateway name, if blank ///-->
+              <param name="realm" value="{{ gw.realm }}"/>
+              <!--/// username to use in from: *optional* same as  username, if blank ///-->
+              <param name="from-user" value="{{ gw.from_user }}"/>
+              <!--/// domain to use in from: *optional* same as  realm, if blank ///-->
+              <param name="from-domain" value="{{ gw.from_domain }}"/>
+              <!--/// account password *required* ///-->
+              <param name="password" value="{{ gw.password }}"/>
+              <!--/// replace the INVITE from user with the channel's caller-id ///-->
+              <param name="caller-id-in-from" value="{{ gw.caller_id_in_form }}"/>
+              <!--/// extension for inbound calls: *optional* same as username, if blank ///-->
+              <param name="extension" value="{{ gw.extension }}"/>
+              <!--/// proxy host: *optional* same as realm, if blank ///-->
+              <param name="proxy" value="{{ gw.proxy }}"/>
+              <!--/// send register to this proxy: *optional* same as proxy, if blank ///-->
+              <param name="register-proxy" value="{{ gw.register_proxy }}"/>
+              <!--/// expire in seconds: *optional* 3600, if blank ///-->
+              <param name="expire-seconds" value="{{ gw.expire_seconds }}"/>
+              <!--/// do not register ///-->
+              <param name="register" value="{{ gw.register }}"/>
+              <!-- which transport to use for register -->
+              <param name="register-transport" value="{{ gw.register_transport }}"/>
+              <!--How many seconds before a retry when a failure or timeout occurs -->
+              <param name="retry-seconds" value="{{ gw.retry_seconds }}"/>
+              <!--extra sip params to send in the contact-->
+              <param name="contact-params" value="{{ gw.contact_params }}"/>
+              <!--send an options ping every x seconds, failure will unregister and/or mark it down-->
+              <param name="ping" value="{{ gw.ping }}"/>
+          </gateway>
+         {% endfor %}
+        </gateways>
        </user>
        </users>
       </group>
